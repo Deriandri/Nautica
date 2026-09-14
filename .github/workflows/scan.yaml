@@ -3,7 +3,7 @@ name: Proxy Scanner
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 0 * * 0"
 
 permissions:
   contents: write
@@ -18,11 +18,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Use Bun
         uses: oven-sh/setup-bun@v2
+
       - name: Start Scan
         run: |
           bun install && bun run ./helper/proxyip.ts
+
       - name: Publish Result
         if: ${{ success() }}
         run: |
